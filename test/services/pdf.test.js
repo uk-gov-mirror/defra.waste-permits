@@ -18,6 +18,10 @@ const testSections = [
   {
     headingId: 'section-permit-holder-individual-heading',
     answers: [{ answer: '' }]
+  },
+  {
+    headingId: 'section-permit-holder-type-heading',
+    answers: [{ answer: 'test permit holder type' }]
   }
 ]
 
@@ -29,7 +33,7 @@ lab.experiment('pdf module tests:', () => {
     Code.expect(pdf.createPDF).to.be.a.function()
   })
 
-  lab.test('a document-definitino/json-template can be created', () => {
+  lab.test.only('a document-definitino/json-template can be created', () => {
     Code.expect(pdf.createPdfDocDefinition).to.be.a.function()
     const result = pdf.createPdfDocDefinition(testSections, testApplication)
     Code.expect(result).to.be.an.object()
@@ -37,7 +41,7 @@ lab.experiment('pdf module tests:', () => {
     Code.expect(result.info.author).to.equal('contact name')
   })
 
-  lab.test('a pdf document/buffer can be created', async () => {
+  lab.test.only('a pdf document/buffer can be created', async () => {
     const result = await pdf.createPDF(testSections, testApplication)
     Code.expect(result).to.be.a.buffer()
   })
@@ -50,5 +54,13 @@ lab.experiment('pdf module tests:', () => {
       error = err
     }
     Code.expect(error.message).to.equal('PDF render failed')
+  })
+})
+
+lab.experiment.only('PDF module date of birth tests:', () => {
+  lab.test('cleanseDobAnswers correctly removes DoB', () => {
+    const result = pdf.cleanseSections(testSections, testPermitHolderType)
+    console.log(result.content[4].table.body)
+    Code.expect(result).to.be.an.object()
   })
 })

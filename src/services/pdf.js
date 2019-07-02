@@ -192,7 +192,9 @@ const printer = new PdfMake({
 })
 
 module.exports = {
-  createPdfDocDefinition: createPdfDocDefinition,
+  cleanseDobAnswers,
+  cleanseSections,
+  createPdfDocDefinition,
   createPDFStream: (sections, application) => {
     return printer
       .createPdfKitDocument(
