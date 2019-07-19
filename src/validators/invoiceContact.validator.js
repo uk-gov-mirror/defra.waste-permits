@@ -9,7 +9,7 @@ const Contact = require('../persistence/entities/contact.entity')
 const {
   EMAIL_VALID_REGEX,
   LEADING_AND_TRAILING_DASHES_REGEX,
-  LETTERS_HYPHENS_AND_APOSTROPHES_REGEX,
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX,
   PLUSES_AND_SPACES_REGEX,
   PLUSES_CANNOT_PRECEDE_ZERO,
   PLUSES_SPACES_AND_NUMBERS_REGEX
@@ -79,11 +79,11 @@ module.exports = class InvoiceContactValidator extends BaseValidator {
   get customValidators () {
     return {
       'first-name': {
-        'custom.invalid': (value) => !(LETTERS_HYPHENS_AND_APOSTROPHES_REGEX).test(value),
+        'custom.invalid': (value) => !(LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX).test(value),
         'custom.no-leading-and-trailing-dashes': (value) => (LEADING_AND_TRAILING_DASHES_REGEX).test(value)
       },
       'last-name': {
-        'custom.invalid': (value) => !(LETTERS_HYPHENS_AND_APOSTROPHES_REGEX).test(value),
+        'custom.invalid': (value) => !(LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX).test(value),
         'custom.no-leading-and-trailing-dashes': (value) => (LEADING_AND_TRAILING_DASHES_REGEX).test(value)
       },
       'telephone': {

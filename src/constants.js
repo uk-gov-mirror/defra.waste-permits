@@ -218,10 +218,18 @@ Constants.buildPageTitle = (pageHeading) => {
 Constants.Validation = {
   EMAIL_VALID_REGEX: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   LEADING_AND_TRAILING_DASHES_REGEX: /(^-.*$|^.*-$)/,
-  LETTERS_HYPHENS_AND_APOSTROPHES_REGEX: /^[A-Za-zÀ-ÖØ-öø-ÿ'-]+$/,
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX: /^(?!(?:\S*\s){3})([A-Za-zÀ-ÖØ-öø-ÿ'\-\s]+)$/,
   PLUSES_AND_SPACES_REGEX: /(\+|\s)/g,
   PLUSES_SPACES_AND_NUMBERS_REGEX: /^[0-9 +]*$/,
   PLUSES_CANNOT_PRECEDE_ZERO: /^(\+[ ]*[1-9][0-9 ]*|[^+][0-9 ]*)$/
+}
+
+Constants.ValidationErrors = {
+  EMPTY_FIRST_NAME_ERROR: 'Enter a first name',
+  EMPTY_LAST_NAME_ERROR: 'Enter a last name',
+  AT_LEAST_TWO_LETTERS_ERROR: 'must have at least two letters - if you entered an initial please enter a name',
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR: 'can only include letters, hyphens, apostrophes, and a maximum of 3 spaces - delete any other characters',
+  LEADING_AND_TRAILING_DASHES_ERROR: 'cannot start or end with a dash - delete the dash'
 }
 
 Constants.getVersion = () => {

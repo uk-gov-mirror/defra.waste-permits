@@ -10,29 +10,37 @@ const Contact = require('../persistence/entities/contact.entity')
 const {
   EMAIL_VALID_REGEX,
   LEADING_AND_TRAILING_DASHES_REGEX,
-  LETTERS_HYPHENS_AND_APOSTROPHES_REGEX,
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX,
   PLUSES_AND_SPACES_REGEX,
   PLUSES_CANNOT_PRECEDE_ZERO,
   PLUSES_SPACES_AND_NUMBERS_REGEX
 } = Constants.Validation
 
+const {
+  EMPTY_FIRST_NAME_ERROR,
+  EMPTY_LAST_NAME_ERROR,
+  AT_LEAST_TWO_LETTERS_ERROR,
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR,
+  LEADING_AND_TRAILING_DASHES_ERROR
+} = Constants.ValidationErrors
+
 module.exports = class ContactDetailsValidator extends BaseValidator {
   get errorMessages () {
     return {
       'first-name': {
-        'any.empty': `Enter a first name`,
-        'any.required': `Enter a first name`,
-        'string.min': `First name must have at least two letters - if you entered an initial please enter a name`,
-        'custom.invalid': `First name can only include letters, hyphens and apostrophes - delete any other characters`,
-        'custom.no-leading-and-trailing-dashes': `First name cannot start or end with a dash - delete the dash`,
+        'any.empty': EMPTY_FIRST_NAME_ERROR,
+        'any.required': EMPTY_FIRST_NAME_ERROR,
+        'string.min': `First name ${AT_LEAST_TWO_LETTERS_ERROR}`,
+        'custom.invalid': `First name ${LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR}`,
+        'custom.no-leading-and-trailing-dashes': `First name ${LEADING_AND_TRAILING_DASHES_ERROR}`,
         'string.max': `Enter a shorter first name with no more than ${Contact.firstName.length.max} characters`
       },
       'last-name': {
-        'any.empty': `Enter a last name`,
-        'any.required': `Enter a last name`,
-        'string.min': `Last name must have at least two letters - if you entered an initial please enter a name`,
-        'custom.invalid': `Last name can only include letters, hyphens and apostrophes - delete any other characters`,
-        'custom.no-leading-and-trailing-dashes': `Last name cannot start or end with a dash - delete the dash`,
+        'any.empty': EMPTY_LAST_NAME_ERROR,
+        'any.required': EMPTY_LAST_NAME_ERROR,
+        'string.min': `Last name ${AT_LEAST_TWO_LETTERS_ERROR}`,
+        'custom.invalid': `Last name ${LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR}`,
+        'custom.no-leading-and-trailing-dashes': `Last name ${LEADING_AND_TRAILING_DASHES_ERROR}`,
         'string.max': `Enter a shorter last name with no more than ${Contact.lastName.length.max} characters`
       },
       'agent-company': {
@@ -92,11 +100,11 @@ module.exports = class ContactDetailsValidator extends BaseValidator {
   get customValidators () {
     return {
       'first-name': {
-        'custom.invalid': (value) => !(LETTERS_HYPHENS_AND_APOSTROPHES_REGEX).test(value),
+        'custom.invalid': (value) => !(LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX).test(value),
         'custom.no-leading-and-trailing-dashes': (value) => (LEADING_AND_TRAILING_DASHES_REGEX).test(value)
       },
       'last-name': {
-        'custom.invalid': (value) => !(LETTERS_HYPHENS_AND_APOSTROPHES_REGEX).test(value),
+        'custom.invalid': (value) => !(LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX).test(value),
         'custom.no-leading-and-trailing-dashes': (value) => (LEADING_AND_TRAILING_DASHES_REGEX).test(value)
       },
       'telephone': {

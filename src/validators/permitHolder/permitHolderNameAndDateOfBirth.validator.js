@@ -2,12 +2,16 @@
 
 const moment = require('moment')
 const Joi = require('@hapi/joi')
+const Constants = require('../../constants')
 const BaseValidator = require('../base.validator')
 const AddressDetail = require('../../persistence/entities/addressDetail.entity')
 const Contact = require('../../persistence/entities/contact.entity')
 
-const LEADING_AND_TRAILING_DASHES_REGEX = /(^-.*$|^.*-$)/
-const LETTERS_HYPHENS_AND_APOSTROPHES_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿ'-]+$/
+const {
+  LEADING_AND_TRAILING_DASHES_REGEX,
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX
+} = Constants.Validation
+
 const MAX_AGE = 120
 const MIN_AGE = 16
 
@@ -68,11 +72,11 @@ module.exports = class PermitHolderNameAndDateOfBirthValidator extends BaseValid
   get customValidators () {
     return {
       'first-name': {
-        'custom.invalid': (value) => !(LETTERS_HYPHENS_AND_APOSTROPHES_REGEX).test(value),
+        'custom.invalid': (value) => !(LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX).test(value),
         'custom.no-leading-and-trailing-dashes': (value) => (LEADING_AND_TRAILING_DASHES_REGEX).test(value)
       },
       'last-name': {
-        'custom.invalid': (value) => !(LETTERS_HYPHENS_AND_APOSTROPHES_REGEX).test(value),
+        'custom.invalid': (value) => !(LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_REGEX).test(value),
         'custom.no-leading-and-trailing-dashes': (value) => (LEADING_AND_TRAILING_DASHES_REGEX).test(value)
       },
       'job-title': {
