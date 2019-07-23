@@ -225,11 +225,30 @@ Constants.Validation = {
 }
 
 Constants.ValidationErrors = {
-  EMPTY_FIRST_NAME_ERROR: 'Enter a first name',
-  EMPTY_LAST_NAME_ERROR: 'Enter a last name',
-  AT_LEAST_TWO_LETTERS_ERROR: 'must have at least two letters - if you entered an initial please enter a name',
-  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR: 'can only include letters, hyphens, apostrophes, and a maximum of 3 spaces - delete any other characters',
-  LEADING_AND_TRAILING_DASHES_ERROR: 'cannot start or end with a dash - delete the dash'
+  MISSING_INPUT_ERROR: function (field) {
+    return `Enter a ${field}`
+  },
+  AT_LEAST_TWO_LETTERS_ERROR: function (field) {
+    return `${field} must have at least two letters - if you entered an initial please enter a name`
+  },
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR: function (field) {
+    return `${field} can only include letters, hyphens, apostrophes and up to 2 spaces - delete any other characters`
+  },
+  LEADING_AND_TRAILING_DASHES_ERROR: function (field) {
+    return `${field} cannot start or end with a dash - delete the dash`
+  },
+  ENTER_SHORTER_ERROR: function ({ field, max }) {
+    return `Enter a shorter ${field} with no more than ${max} characters`
+  },
+  MISSING_AGENT_NAME_ERROR: `Enter the agent’s trading, business or company name`,
+  INVALID_TELEPHONE_NUMBER_ERROR: 'Telephone number can only include numbers, spaces and the + sign. Please remove any other characters.',
+  PLUS_ZERO_TELEPHONE_NUMBER_ERROR: 'The + sign for international numbers should be at the start of the number, followed by a number 1 to 9, not a 0',
+  TELEPHONE_NUMBER_SHORT_ERROR: function (min) {
+    return `That telephone number is too short. It should have at least ${min} characters. Make sure you include the area code.`
+  },
+  TELEPHONE_NUMBER_LONG_ERROR: function ({ max, string }) {
+    return `That telephone number is too long. It should have no more than ${max} ${string}.`
+  }
 }
 
 Constants.getVersion = () => {

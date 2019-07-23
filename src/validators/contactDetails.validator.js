@@ -17,45 +17,50 @@ const {
 } = Constants.Validation
 
 const {
-  EMPTY_FIRST_NAME_ERROR,
-  EMPTY_LAST_NAME_ERROR,
+  MISSING_INPUT_ERROR,
   AT_LEAST_TWO_LETTERS_ERROR,
   LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR,
-  LEADING_AND_TRAILING_DASHES_ERROR
+  LEADING_AND_TRAILING_DASHES_ERROR,
+  ENTER_SHORTER_ERROR,
+  MISSING_AGENT_NAME_ERROR,
+  INVALID_TELEPHONE_NUMBER_ERROR,
+  PLUS_ZERO_TELEPHONE_NUMBER_ERROR,
+  TELEPHONE_NUMBER_SHORT_ERROR,
+  TELEPHONE_NUMBER_LONG_ERROR
 } = Constants.ValidationErrors
 
 module.exports = class ContactDetailsValidator extends BaseValidator {
   get errorMessages () {
     return {
       'first-name': {
-        'any.empty': EMPTY_FIRST_NAME_ERROR,
-        'any.required': EMPTY_FIRST_NAME_ERROR,
-        'string.min': `First name ${AT_LEAST_TWO_LETTERS_ERROR}`,
-        'custom.invalid': `First name ${LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR}`,
-        'custom.no-leading-and-trailing-dashes': `First name ${LEADING_AND_TRAILING_DASHES_ERROR}`,
-        'string.max': `Enter a shorter first name with no more than ${Contact.firstName.length.max} characters`
+        'any.empty': MISSING_INPUT_ERROR('first name'),
+        'any.required': MISSING_INPUT_ERROR('first name'),
+        'string.min': AT_LEAST_TWO_LETTERS_ERROR('first name'),
+        'custom.invalid': LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('first name'),
+        'custom.no-leading-and-trailing-dashes': LEADING_AND_TRAILING_DASHES_ERROR('first name'),
+        'string.max': ENTER_SHORTER_ERROR({ field: 'first name', max: Contact.firstName.length.max })
       },
       'last-name': {
-        'any.empty': EMPTY_LAST_NAME_ERROR,
-        'any.required': EMPTY_LAST_NAME_ERROR,
-        'string.min': `Last name ${AT_LEAST_TWO_LETTERS_ERROR}`,
-        'custom.invalid': `Last name ${LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR}`,
-        'custom.no-leading-and-trailing-dashes': `Last name ${LEADING_AND_TRAILING_DASHES_ERROR}`,
-        'string.max': `Enter a shorter last name with no more than ${Contact.lastName.length.max} characters`
+        'any.empty': MISSING_INPUT_ERROR('last name'),
+        'any.required': MISSING_INPUT_ERROR('last name'),
+        'string.min': AT_LEAST_TWO_LETTERS_ERROR('last name'),
+        'custom.invalid': LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('last name'),
+        'custom.no-leading-and-trailing-dashes': LEADING_AND_TRAILING_DASHES_ERROR('last name'),
+        'string.max': ENTER_SHORTER_ERROR({ field: 'last name', max: Contact.lastName.length.max })
       },
       'agent-company': {
-        'any.empty': `Enter the agent’s trading, business or company name`,
-        'any.required': `Enter the agent’s trading, business or company name`,
-        'string.max': `Enter a shorter trading, business or company name with no more than ${Account.accountName.length.max} characters`
+        'any.empty': MISSING_AGENT_NAME_ERROR,
+        'any.required': MISSING_AGENT_NAME_ERROR,
+        'string.max': ENTER_SHORTER_ERROR({ field: 'trading, business or company name', max: Account.accountName.length.max })
       },
       'telephone': {
-        'any.empty': `Enter a telephone number`,
-        'any.required': `Enter a telephone number`,
-        'custom.invalid': `Telephone number can only include numbers, spaces and the + sign. Please remove any other characters.`,
-        'custom.plus-zero': `The + sign for international numbers should be at the start of the number, followed by a number 1 to 9, not a 0`,
-        'custom.min': `That telephone number is too short. It should have at least ${AddressDetail.telephone.length.min} characters. Make sure you include the area code.`,
-        'custom.max': `That telephone number is too long. It should have no more than ${AddressDetail.telephone.length.maxDigits} digits.`,
-        'string.max': `That telephone number is too long. It should have no more than ${AddressDetail.telephone.length.max} characters.`
+        'any.empty': MISSING_INPUT_ERROR('telephone number'),
+        'any.required': MISSING_INPUT_ERROR('telephone number'),
+        'custom.invalid': INVALID_TELEPHONE_NUMBER_ERROR,
+        'custom.plus-zero': PLUS_ZERO_TELEPHONE_NUMBER_ERROR,
+        'custom.min': TELEPHONE_NUMBER_SHORT_ERROR(AddressDetail.telephone.length.min),
+        'custom.max': TELEPHONE_NUMBER_LONG_ERROR({ max: AddressDetail.telephone.length.maxDigits, string: 'digits' }),
+        'string.max': TELEPHONE_NUMBER_LONG_ERROR({ max: AddressDetail.telephone.length.max, string: 'characters' })
       },
       'email': {
         'any.empty': `Enter an email address for the main contact`,

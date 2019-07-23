@@ -17,6 +17,15 @@ const ContactDetailsTask = require('../../src/models/taskList/contactDetails.tas
 const CookieService = require('../../src/services/cookie.service')
 const { COOKIE_RESULT } = require('../../src/constants')
 
+const Constants = require('../../src/constants')
+
+const {
+  MISSING_INPUT_ERROR,
+  AT_LEAST_TWO_LETTERS_ERROR,
+  LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR,
+  LEADING_AND_TRAILING_DASHES_ERROR
+} = Constants.ValidationErrors
+
 const routePath = '/contact-details'
 const nextRoutePath = '/task-list'
 
@@ -152,46 +161,51 @@ lab.experiment('Contact details page tests:', () => {
           field: 'first-name',
           value: 'fred@james-',
           messages: [
-            'First name can only include letters, hyphens and apostrophes - delete any other characters',
-            'First name cannot start or end with a dash - delete the dash']
+            LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('first name'),
+            LEADING_AND_TRAILING_DASHES_ERROR('first name')
+          ]
         },
         {
           field: 'first-name',
           value: '7',
           messages: [
-            'First name must have at least two letters - if you entered an initial please enter a name',
-            'First name can only include letters, hyphens and apostrophes - delete any other characters']
+            AT_LEAST_TWO_LETTERS_ERROR('first name'),
+            LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('first name')
+          ]
         },
         {
           field: 'first-name',
           value: `_${'a'.repeat(50)}`,
           messages: [
             'Enter a shorter first name with no more than 50 characters',
-            'First name can only include letters, hyphens and apostrophes - delete any other characters']
+            LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('first name')
+          ]
         },
         {
           field: 'last-name',
           value: '',
-          messages: ['Enter a last name']
+          messages: [MISSING_INPUT_ERROR('last name')]
         },
         {
           field: 'last-name',
           value: 'fred!james-',
           messages: [
-            'Last name can only include letters, hyphens and apostrophes - delete any other characters',
-            'Last name cannot start or end with a dash - delete the dash']
+            LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('last name'),
+            LEADING_AND_TRAILING_DASHES_ERROR('last name')
+          ]
         },
         {
           field: 'last-name',
           value: '723423gjhg4jkhjk3t378i3qgfiukhkufhf4',
-          messages: ['Last name can only include letters, hyphens and apostrophes - delete any other characters']
+          messages: [LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('last name')]
         },
         {
           field: 'last-name',
           value: '+'.repeat(51),
           messages: [
             'Enter a shorter last name with no more than 50 characters',
-            'Last name can only include letters, hyphens and apostrophes - delete any other characters']
+            LETTERS_HYPHENS_SPACES_AND_APOSTROPHES_ERROR('last name')
+          ]
         },
         {
           field: 'telephone',
