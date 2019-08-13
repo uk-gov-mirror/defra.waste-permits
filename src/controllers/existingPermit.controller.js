@@ -13,32 +13,42 @@ module.exports = class ExistingPermitController extends BaseController {
   }
 
   async doPost (request, h) {
-    const { taskDeterminants } = await RecoveryService.createApplicationContext(h)
+    let route
 
-    // Clear task determinants
-    await taskDeterminants.save({
+    // set determinants to be cleared
+    let determinants = {
       bestAvailableTechniquesAssessment: false,
       airDispersionModellingRequired: false,
       screeningToolRequired: false,
       habitatAssessmentRequired: false,
       energyEfficiencyReportRequired: false
-    })
+    }
+
+    const { taskDeterminants } = await RecoveryService.createApplicationContext(h)
 
     const { 'existing-permit': existingPermit } = request.payload
 
     if (existingPermit === 'yes') {
+      await taskDeterminants.save(determinants)
       return this.redirect({ h, route: MCP_HAS_EXISTING_PERMIT })
     }
 
     const { isBespoke, taskDeterminants: { mcpType } } = await RecoveryService.createApplicationContext(h)
     if (isBespoke) {
-      if (mcpType === STATIONARY_SG) {
-        return this.redirect({ h, route: MCP_AIR_DISPERSION_MODELLING })
-      } else {
-        return this.redirect({ h, route: MCP_UNDER_500_HOURS })
-      }
+      // Add changeActivitiesUrl to the list of determinants to be saved.
+      // This will be used on the confirm activities screen for the
+      // "Change activities and assessments" link.
+      route = mcpType === STATIONARY_SG
+        ? MCP_AIR_DISPERSION_MODELLING
+        : MCP_UNDER_500_HOURS
+
+      determinants = { ...determinants, ...{ changeActivitiesUrl: route } }
     } else {
-      return this.redirect({ h, route: TASK_LIST })
+      route = TASK_LIST
     }
+
+    await taskDeterminants.save(determinants)
+
+    return this.redirect({ h, route })
   }
 }

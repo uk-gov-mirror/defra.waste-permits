@@ -14,7 +14,7 @@ const { COOKIE_RESULT } = require('../../src/constants')
 const ApplicationCost = require('../../src/models/applicationCost.model')
 
 const routePath = '/confirm-cost'
-const expectedWasteActivitiesPath = '/waste-activity'
+const changeActivitiesUrl = '/change-activities-link'
 const nextRoutePath = '/task-list'
 
 let getRequest
@@ -25,6 +25,7 @@ let sandbox
 
 lab.beforeEach(() => {
   mocks = new Mocks()
+  mocks.taskDeterminants.changeActivitiesUrl = changeActivitiesUrl
 
   // Create a sinon sandbox to stub methods
   sandbox = sinon.createSandbox()
@@ -61,10 +62,9 @@ lab.experiment('Triage confirm costs page tests:', () => {
     })
 
     lab.test('GET provides correct activity link', async () => {
-      delete mocks.context.mcpType
       const doc = await GeneralTestHelper.getDoc(getRequest)
-      Code.expect(doc.getElementById('change-waste-activities')).to.exist()
-      Code.expect(doc.getElementById('change-waste-activities').getAttribute('href')).to.equal(expectedWasteActivitiesPath)
+      Code.expect(doc.getElementById('change-activities')).to.exist()
+      Code.expect(doc.getElementById('change-activities').getAttribute('href')).to.equal(changeActivitiesUrl)
     })
 
     lab.experiment('GET displays the correct costs', () => {

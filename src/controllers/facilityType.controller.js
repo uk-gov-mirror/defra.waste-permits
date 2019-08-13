@@ -34,6 +34,8 @@ module.exports = class FacilityTypeController extends BaseController {
         if (!featureConfig.hasBespokeFeature) {
           return this.redirect({ h, route: FACILITY_APPLY_OFFLINE })
         }
+        // Set url for "Change activities and assessments" link on confirm activities screen
+        await taskDeterminants.save({ changeActivitiesUrl: WASTE_ACTIVITY.path })
         return this.redirect({ h, route: WASTE_ACTIVITY })
       default:
         return this.redirect({ h, route: FACILITY_APPLY_OFFLINE })

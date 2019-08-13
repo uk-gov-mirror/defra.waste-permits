@@ -59,6 +59,7 @@ module.exports = class TaskDeterminants {
       _facilityType = {},
       _wasteActivities = [],
       _wasteAssessments = [],
+      _changeActivitiesUrl,
       airDispersionModellingRequired = false,
       energyEfficiencyReportRequired = false,
       bestAvailableTechniquesAssessment = false,
@@ -79,6 +80,7 @@ module.exports = class TaskDeterminants {
       facilityType: _facilityType.id,
       wasteActivities: _wasteActivities.filter((activity) => typeof activity === 'object').map(({ shortName }) => shortName).join(','),
       wasteAssessments: _wasteAssessments.filter((assessment) => typeof assessment === 'object').map(({ shortName }) => shortName).join(','),
+      changeActivitiesUrl: _changeActivitiesUrl,
       airDispersionModellingRequired,
       energyEfficiencyReportRequired,
       bestAvailableTechniquesAssessment,
@@ -191,5 +193,19 @@ module.exports = class TaskDeterminants {
 
   get wasteAssessments () {
     return this._wasteAssessments
+  }
+
+  /// changeActivitiesUrl ///
+
+  set changeActivitiesUrl (changeActivitiesUrl) {
+    // if we have a route object then use the path, otherwise use the string we have as a url
+    if (typeof changeActivitiesUrl === 'object') {
+      changeActivitiesUrl = changeActivitiesUrl.path
+    }
+    this._changeActivitiesUrl = changeActivitiesUrl
+  }
+
+  get changeActivitiesUrl () {
+    return this._changeActivitiesUrl
   }
 }

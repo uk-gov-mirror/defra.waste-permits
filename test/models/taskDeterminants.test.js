@@ -35,6 +35,8 @@ const allAssessments = [
   { id: 'ass-3', shortName: '1-19-2' }
 ]
 
+const pathObject = { path: 'TEST' }
+
 lab.beforeEach(() => {
   mocks = new Mocks()
 
@@ -122,6 +124,20 @@ lab.experiment('TaskDeterminants Model tests:', () => {
       const taskDeterminants = await TaskDeterminants.get(context)
       await taskDeterminants.save({ wasteAssessments: '' })
       Code.expect(taskDeterminants.wasteAssessments).to.equal([])
+    })
+
+    lab.test('changeActivitiesUrl with string', async () => {
+      const taskDeterminants = await TaskDeterminants.get(context)
+      await taskDeterminants.save({ changeActivitiesUrl: 'TEST' })
+      Code.expect(taskDeterminants.changeActivitiesUrl).to.equal('TEST')
+      Code.expect(dataSourceSaveStub.callCount).to.equal(1)
+    })
+
+    lab.test('changeActivitiesUrl with object', async () => {
+      const taskDeterminants = await TaskDeterminants.get(context)
+      await taskDeterminants.save({ changeActivitiesUrl: pathObject })
+      Code.expect(taskDeterminants.changeActivitiesUrl).to.equal('TEST')
+      Code.expect(dataSourceSaveStub.callCount).to.equal(1)
     })
   })
 })
